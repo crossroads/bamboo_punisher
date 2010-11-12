@@ -20,6 +20,6 @@
 # Learn more: http://github.com/javan/whenever
 
 every 2.minutes do
-  command 'sudo ruby /opt/scripts/build_punisher/build_punisher.rb'
+  command 'sudo ruby /opt/scripts/bamboo_punisher/bamboo_punisher.rb'
 end
 
