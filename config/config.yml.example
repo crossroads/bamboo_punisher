@@ -3,7 +3,7 @@ bamboo:
   username: xxxxxxxxxxxxxxxxx
   password: xxxxxxxxxxxxxxxxx
   
-user_positions:
+users:
   "User One":
     right: 0
     up:    0

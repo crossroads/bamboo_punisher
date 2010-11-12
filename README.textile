@@ -1,0 +1,63 @@
+h3. Developers breaking your build too frequently? Make them think twice before pushing their changes, with the
+
+h1. BAMBOO PUNISHER
+
+h3. What?
+
+If a developer commits a change that breaks the build, they will be attacked with a missile.
+
+h3. Parts
+
+* Atlassian Bamboo
+* Grey USB Missile Launcher (the unbranded kind).
+** (Vendor ID: 0x1130, Product ID: 0x0202)
+* Linux machine to monitor the build
+
+h3. Setup
+
+Disclaimer:
+This isn't meant to be a one-size-fits-all project.
+But if your reading this, you'll know how to tweak it for your CI system and make it work :)
+
+1) Follow the instructions on this page to set up your USB missile launcher on linux:
+
+* http://www.lukecole.name/research_and_projects/personal/usb_missile_launcher/
+
+2) Place your USB Missile launcher somewhere strategic and effective.
+
+3) Clone this git repository.
+
+4) $ mv config/config.yml.example config/config.yml
+
+5) Edit the config file to configure your Bamboo URL, username and password for the RSS feed. 
+
+6) You will also see the following in the config file:
+
+users:
+  "User One":
+    right: 0
+    up:    0
+  "User Two":
+    right: 0
+    up:    0
+  "User Three":
+    right: 0
+    up:    0
+
+The USB Missile launcher is always reset to fully down, and fully left.
+So the 'right' and 'up' parameters are how many milliseconds the launcher should rotate
+in each respective direction.
+You should use 'sudo USBMissileLauncherUtils -R', etc. to work out the right values for this.
+
+Change "User One" to the git name of the developer, as it appears in the Code Changes section of a Bamboo Build Result.
+
+7) Set up your root crontab. I just used the 'whenever' gem to work out the values. 
+(Default configuration is to check the failed build RSS every 2 minutes.)
+
+7a) So install the 'whenever' gem.
+7b) From the repository root, type $ whenever
+7c) Copy the output to your clipboard.
+7d) Edit your root crontab by typing $ sudo -i -e crontab
+7e) Paste the cron string, and save the file.
+
+You should be all set up, but test it manually first to make sure its working.
