@@ -1,4 +1,4 @@
-h3. Developers breaking your build too frequently? Make them think twice before pushing their changes, with the
+Developers breaking your build too frequently? Make them think twice before pushing their changes, with the
 
 h1. BAMBOO PUNISHER
 
