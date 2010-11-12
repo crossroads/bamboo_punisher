@@ -19,7 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 5.minutes do
-  command '/opt/scripts/build_punisher'
+every 2.minutes do
+  command 'sudo ruby /opt/scripts/build_punisher/build_punisher.rb'
 end
 

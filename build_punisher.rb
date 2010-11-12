@@ -7,7 +7,7 @@ require 'nokogiri'
 require 'open-uri'
 
 File_Last_Fail = File.join(File.dirname(__FILE__), 'last_fail.yml')
-File_Config    = File.join(File.dirname(__FILE__), 'config.yml')
+File_Config    = File.join(File.dirname(__FILE__), 'config', 'config.yml')
 ResetTimes     = {:down => 4000,
                   :left => 9000}
 MaxPerRotation = 3000
@@ -19,7 +19,7 @@ class BuildPunisher
     @config = YAML.load_file(File_Config)
   end
 
-  def retrieve_xml   
+  def retrieve_xml
     puts "=== So whos been naughty then? ..."
     url = URI.parse(@config["bamboo"]["failed_rss_url"])
     http = Net::HTTP.new(url.host, url.port)
