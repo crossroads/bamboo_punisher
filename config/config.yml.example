@@ -1,0 +1,15 @@
+bamboo:
+  failed_rss_url: "https://xxxxxxxxxxxxx/bamboo/rss/createAllBuildsRssFeed.action?feedType=rssFailed&os_authType=basic"
+  username: xxxxxxxxxxxxxxxxx
+  password: xxxxxxxxxxxxxxxxx
+  
+user_positions:
+  "User One":
+    right: 0
+    up:    0
+  "User Two":
+    right: 0
+    up:    0
+  "User Three":
+    right: 0
+    up:    0
