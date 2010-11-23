@@ -14,8 +14,6 @@ MaxPerRotation = 3000
 
 BambooServerSSH = "root@integration"
 
-File.delete("/opt/scripts/bamboo_punisher/missile_log.avi") if File.exist?("/opt/scripts/bamboo_punisher/missile_log.avi")
-
 class BuildPunisher
   attr_accessor :config
   
@@ -67,25 +65,18 @@ class BuildPunisher
       else
         iteration_time = time
       end
-      
-      pid = fork do
-        #exec "echo 'bunnies'"
-        exec "USBMissileLauncherUtils -#{direction} -S #{iteration_time}"
+      Thread.new do
+        `USBMissileLauncherUtils -#{direction} -S #{iteration_time}`
       end
-      Process.detach(pid)
-      
       sleep(iteration_time.to_f / 1000.0)
       time -= MaxPerRotation
     end
   end
   
   def fire
-    pid = fork do
-      #exec "echo 'bunnies'"
-      exec "USBMissileLauncherUtils -F"
+    Thread.new do
+      `USBMissileLauncherUtils -F`
     end
-    Process.detach(pid)
-    
     sleep 2
   end
 
@@ -109,11 +100,11 @@ build_number = $2
 
 if @last_fail[:time] != last_fail_time
   
-  # Start up webcam recording process 
-  pid = fork do
-    exec "mencoder tv:// -tv driver=v4l2:width=320:height=240:fps=30:device=/dev/video0 -nosound -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=1800:vhq:keyint=250 -o /opt/scripts/bamboo_punisher/missile_log.avi 2>&1 > /dev/null"
+  # Start up webcam recording process, delete existing file first.
+  File.delete("/opt/scripts/bamboo_punisher/missile_log.avi") if File.exist?("/opt/scripts/bamboo_punisher/missile_log.avi")
+  webcam = Thread.new do
+    system("mencoder tv:// -tv driver=v4l2:width=320:height=240:fps=30:device=/dev/video0 -nosound -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=1800:vhq:keyint=250 -o /opt/scripts/bamboo_punisher/missile_log.avi 2>&1 > /dev/null")
   end
-  Process.detach(pid)
   
   puts "===== The build has failed!! Somebody gonna getta hurt real bad..."  
   @bp.reset
@@ -129,12 +120,13 @@ if @last_fail[:time] != last_fail_time
   File.open(File_Last_Fail, 'w') {|f| f.puts({:time => last_fail_time}.to_yaml) }
   
   # Stop recording.
+  webcam.kill
   system("pkill mencoder")
   
   # Copy the webcam video as a build 'punishments' artifact
-  webcam_videofile = "/opt/scripts/bamboo_punisher/missile_log.avi"
-  bamboo_punishments_path = "/var/bamboo/xml-data/builds/#{build_plan}/download-data/artifacts/build-#{build_number}/Punishments/"
-  system("sudo su ndbroadbent -c \"rsync -ave ssh #{webcam_videofile} #{BambooServerSSH}:#{bamboo_punishments_path}\"")
+  # webcam_videofile = "/opt/scripts/bamboo_punisher/missile_log.avi"
+  # bamboo_punishments_path = "/var/bamboo/xml-data/builds/#{build_plan}/download-data/artifacts/build-#{build_number}/Punishments/"
+  # system("sudo su ndbroadbent -c \"rsync -ave ssh #{webcam_videofile} #{BambooServerSSH}:#{bamboo_punishments_path}\"")
 else
   puts "===== Phew, no-one needs punishing... FOR NOW!"
 end
