@@ -66,7 +66,7 @@ class BuildPunisher
         iteration_time = time
       end
       Thread.new do
-        `USBMissileLauncherUtils -#{direction} -S #{iteration_time}`
+        system("USBMissileLauncherUtils -#{direction} -S #{iteration_time}")
       end
       sleep(iteration_time.to_f / 1000.0)
       time -= MaxPerRotation
@@ -75,7 +75,7 @@ class BuildPunisher
   
   def fire
     Thread.new do
-      `USBMissileLauncherUtils -F`
+      system("USBMissileLauncherUtils -F")
     end
     sleep 2
   end
