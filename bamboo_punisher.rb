@@ -50,7 +50,7 @@ class BuildPunisher
     turn_up(up_time)
     puts "===== FIRE!!!"
     fire
-    sleep 1
+    sleep 0.4
     reset
   end
   
