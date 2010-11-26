@@ -75,8 +75,11 @@ class BuildPunisher
   end
   
   def fire
-    system("USBMissileLauncherUtils -F")
-    sleep 3
+    Thread.new do
+      system("USBMissileLauncherUtils -F")
+      sleep 2.5
+    end
+    sleep 2.5
   end
 
 end
