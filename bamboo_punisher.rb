@@ -50,6 +50,7 @@ class BuildPunisher
     turn_up(up_time)
     puts "===== FIRE!!!"
     fire
+    sleep 1
     reset
   end
   
@@ -77,7 +78,7 @@ class BuildPunisher
     Thread.new do
       system("USBMissileLauncherUtils -F")
     end
-    sleep 2
+    sleep 2.5
   end
 
 end
