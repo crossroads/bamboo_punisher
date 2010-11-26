@@ -77,7 +77,7 @@ class BuildPunisher
   def fire
     Thread.new do
       system("USBMissileLauncherUtils -F")
-      sleep 2.5
+      sleep 6
     end
     sleep 2.5
   end
