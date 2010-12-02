@@ -78,7 +78,7 @@ class BuildPunisher
     Thread.new do
       system("USBMissileLauncherUtils -F && sleep 5")
     end
-    sleep 2.5
+    sleep 4
   end
 
 end
