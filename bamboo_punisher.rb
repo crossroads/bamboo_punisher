@@ -101,10 +101,20 @@ build_number = $2
 
 if @last_fail[:time] != last_fail_time
   
-  # Start up webcam recording process, delete existing file first.
-  File.delete("/opt/scripts/bamboo_punisher/missile_log.avi") if File.exist?("/opt/scripts/bamboo_punisher/missile_log.avi")
+  # Create 'videos' directory, if doesn't exist already.
+  `mkdir -p #{File.join(File.dirname(__FILE__), 'videos')}`
+
+  video_filename = File.expand_path(File.join(File.dirname(__FILE__),
+                             "videos",
+                             "missile_video_" +
+                             Time.now.strftime("%Y.%m.%d_%H-%M-%S") + 
+                             ".avi"))
+  
+  # Start up webcam recording process.
+  #File.delete("/opt/scripts/bamboo_punisher/missile_log.avi") if File.exist?("/opt/scripts/bamboo_punisher/missile_log.avi")
+  
   webcam = Thread.new do
-    system("mencoder tv:// -tv driver=v4l2:width=320:height=240:fps=30:device=/dev/video0 -nosound -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=1800:vhq:keyint=250 -o /opt/scripts/bamboo_punisher/missile_log.avi 2>&1 > /dev/null")
+    system("mencoder tv:// -tv driver=v4l2:width=320:height=240:fps=30:device=/dev/video0 -nosound -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=1800:vhq:keyint=250 -o #{video_filename} 2>&1 > /dev/null")
   end
   
   puts "===== The build has failed!! Somebody gonna getta hurt real bad..."  
